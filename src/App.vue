@@ -1,17 +1,20 @@
 <template>
   <div id="app">
-    <img src="./assets/logo.png">
-    <hello></hello>
+    <domain-search-bar></domain-search-bar>
   </div>
 </template>
 
 <script>
-import Hello from './components/Hello'
+import Vue from 'vue'
+import VueJsonp from 'vue-jsonp'
+Vue.use(VueJsonp)
+
+import DomainSearchBar from './components/DomainSearchBar'
 
 export default {
   name: 'app',
   components: {
-    Hello
+    DomainSearchBar
   }
 }
 </script>
