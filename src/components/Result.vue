@@ -36,11 +36,7 @@ export default {
     }
   },
   created () {
-    console.log(this.domain, this.label)
     this.search()
-  },
-  watch: {
-    // TODO: monitor search result
   },
   computed: {
     label () {
@@ -63,12 +59,10 @@ export default {
   methods: {
     search () {
       let self = this
-      console.log([self.label])
       const url = 'http://203.141.128.87/perl/domain_check/dm_check_domain.cgi'
 
       self.$jsonp(url, { domain: self.label + '.' + self.tld })
         .then(json => {
-          console.log([self.label, json.status])
           self.result = json !== null && json.status === '0'
         })
         .catch(err => {
@@ -81,4 +75,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+/* TODO: style goes here */
 </style>
