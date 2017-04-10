@@ -1,5 +1,17 @@
 <template>
   <div class="result">
+    <span>{{ label }}.{{ tld }}</span>
+
+    <span v-if="typeof result === 'undefined'">
+      loading...
+    </span>
+    <span v-else-if="!result">
+      Not available
+    </span>
+    <span v-else>
+      Available!
+    </span>
+
   </div>
 </template>
 
@@ -8,19 +20,24 @@ import punycode from 'punycode'
 
 export default {
   name: 'result',
-  props: ['domain', 'tld'],
+  props: {
+    domain: {
+      type: String,
+      required: true
+    },
+    tld: {
+      type: String,
+      required: true
+    }
+  },
   data () {
     return {
       result: undefined
     }
   },
   created () {
-    // TODO: set domain/tld props
-    // TODO: start search domain
-
-    console.log(this.domain)
-    // this.tld =
-    // this.domain = this.label()
+    console.log(this.domain, this.label)
+    this.search()
   },
   watch: {
     // TODO: monitor search result
@@ -45,14 +62,18 @@ export default {
   },
   methods: {
     search () {
+      let self = this
+      console.log([self.label])
       const url = 'http://203.141.128.87/perl/domain_check/dm_check_domain.cgi'
-      this.$jsonp(url, { domain: this.label })
+
+      self.$jsonp(url, { domain: self.label + '.' + self.tld })
         .then(json => {
-          console.log(json)  // TODO: remove
-          return json !== null && json.status === '0'
+          console.log([self.label, json.status])
+          self.result = json !== null && json.status === '0'
         })
         .catch(err => {
-          console.log(err)  // TODO: remove
+          console.log(err)
+          self.result = null
         })
     }
   }

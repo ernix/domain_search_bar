@@ -1,14 +1,14 @@
 <template>
   <div class="domain-search-bar">
 
-    <form @submit.prevent>
-      <input v-model="tld" name="tld" type="hidden" />
+    <form @submit.prevent="add">
       <input v-model="next" name="domain" type="text" />
-      <button @click="add" name="submit" type="submit">search</button>
+      <button name="submit" type="submit">search</button>
     </form>
+    <p>{{ next }}</p>
 
-    <div v-for="domain in domains" :is="domain.type">
-      <result :tld="domain.tld" :domain="domain.domain" ></result>
+    <div v-for="result in results">
+      <result v-bind="result"></result>
     </div>
 
   </div>
@@ -23,18 +23,24 @@ export default {
     Result
   },
   data () {
+    const TLD = 'earth'
+
     return {
       next: '',
-      tld: '',
-      domains: []
+      tld: TLD,
+      results: []
+    }
+  },
+  watch: {
+    next: function (val, old) {
+      this.next = val
     }
   },
   methods: {
     add (e) {
-      this.domains.push({
+      this.results.unshift({
         domain: this.next,
-        tld: this.tld,
-        type: 'Result'
+        tld: this.tld
       })
 
       this.next = ''
