@@ -5,11 +5,12 @@
       <input v-model="next" name="domain" type="text" />
       <button name="submit" type="submit">search</button>
     </form>
-    <p>{{ next }}</p>
 
-    <div v-for="result in results">
-      <result v-bind="result"></result>
-    </div>
+    <result
+      v-for="result in results"
+      v-bind="result"
+      :key="result.domain"
+      ></result>
 
   </div>
 </template>
@@ -29,11 +30,6 @@ export default {
       next: '',
       tld: TLD,
       results: []
-    }
-  },
-  watch: {
-    next: function (val, old) {
-      this.next = val
     }
   },
   methods: {
