@@ -17,6 +17,7 @@
 
 <script>
 import punycode from 'punycode'
+import escapeStringRegexp from 'escape-string-regexp'
 
 export default {
   name: 'result',
@@ -47,7 +48,8 @@ export default {
 
       let ascii = punycode.toASCII(trimed)
 
-      let re = new RegExp('^(.*)\\.' + this.tld + '$', 'i')
+      let reStr = '^(.*)\\.' + escapeStringRegexp(this.tld) + '$'
+      let re = new RegExp(reStr, 'i')
       let match = re.exec(ascii)
       if (match !== null) {
         ascii = match[1]
