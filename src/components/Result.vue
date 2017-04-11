@@ -17,7 +17,6 @@
 
 <script>
 import punycode from 'punycode'
-import escapeStringRegexp from 'escape-string-regexp'
 
 export default {
   name: 'result',
@@ -46,13 +45,12 @@ export default {
         return
       }
 
-      let ascii = punycode.toASCII(trimed)
+      let ascii = punycode.toASCII(trimed).toLowerCase()
 
-      let reStr = '^(.*)\\.' + escapeStringRegexp(this.tld) + '$'
-      let re = new RegExp(reStr, 'i')
-      let match = re.exec(ascii)
-      if (match !== null) {
-        ascii = match[1]
+      // Trim trailing tld part from input if exists
+      let dtld = '.' + this.tld
+      if (ascii.substr(0 - dtld.length) === dtld) {
+        ascii = ascii.slice(0, 0 - dtld.length)
       }
 
       return ascii
